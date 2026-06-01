@@ -1,0 +1,40 @@
+name: flutter_rich_notifications
+description: >-
+  Display Android and iOS push notifications with a full hero image AND
+  full multi-line body text. Uses custom RemoteViews on Android and a
+  Notification Content Extension on iOS to bypass the stock notification
+  style limits.
+version: 0.1.0
+homepage: https://github.com/Manish1Pandey/flutter_rich_notifications
+repository: https://github.com/Manish1Pandey/flutter_rich_notifications
+issue_tracker: https://github.com/Manish1Pandey/flutter_rich_notifications/issues
+
+topics:
+  - notifications
+  - push
+  - fcm
+  - rich-media
+  - firebase
+
+environment:
+  sdk: '>=3.4.0 <4.0.0'
+  flutter: '>=3.10.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  plugin_platform_interface: ^2.1.7
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: app.notifly.flutter_rich_notifications
+        pluginClass: FlutterRichNotificationsPlugin
+      ios:
+        pluginClass: FlutterRichNotificationsPlugin
