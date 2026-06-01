@@ -76,6 +76,17 @@ class FlutterRichNotifications {
 ///
 /// All fields have sensible defaults. Override what you need.
 class RichNotificationConfig {
+  /// Create a configuration. Defaults work out of the box; override any
+  /// field to customize the Android channel or hero image height.
+  const RichNotificationConfig({
+    this.androidChannelId = 'rich_notifications_default',
+    this.androidChannelName = 'Rich Notifications',
+    this.androidChannelDescription =
+        'Notifications with hero image and full body text',
+    this.androidSmallIconResName,
+    this.androidImageHeightDp = 200,
+  });
+
   /// Android notification channel ID. Channels are user-visible in
   /// Settings → App → Notifications, so pick something stable.
   final String androidChannelId;
@@ -93,13 +104,4 @@ class RichNotificationConfig {
 
   /// Hero image height in dp on Android. Default 200dp.
   final int androidImageHeightDp;
-
-  const RichNotificationConfig({
-    this.androidChannelId = 'rich_notifications_default',
-    this.androidChannelName = 'Rich Notifications',
-    this.androidChannelDescription =
-        'Notifications with hero image and full body text',
-    this.androidSmallIconResName,
-    this.androidImageHeightDp = 200,
-  });
 }
