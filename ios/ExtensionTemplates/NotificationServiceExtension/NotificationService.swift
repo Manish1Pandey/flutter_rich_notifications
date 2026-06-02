@@ -34,13 +34,13 @@ class NotificationService: UNNotificationServiceExtension {
             return
         }
 
-        URLSession.shared.downloadTask(with: url) { tempUrl, _, _ in
+        URLSession.shared.downloadTask(with: url) { tempUrl, response, _ in
             defer { contentHandler(bestAttemptContent) }
             guard let tempUrl = tempUrl else { return }
 
-            let suggestedName = url.lastPathComponent.isEmpty ? "image.jpg" : url.lastPathComponent
+            let fileExt = Self.fileExtension(for: url, response: response)
             let cacheDir = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
-            let localUrl = cacheDir.appendingPathComponent(suggestedName)
+            let localUrl = cacheDir.appendingPathComponent("frn_image_\(UUID().uuidString)\(fileExt)")
             try? FileManager.default.removeItem(at: localUrl)
 
             do {
@@ -55,6 +55,21 @@ class NotificationService: UNNotificationServiceExtension {
                 // Fall through to text-only notification.
             }
         }.resume()
+    }
+
+    /// Pick a file extension iOS will accept. Order: URL path → MIME type → .jpg fallback.
+    /// `UNNotificationAttachment` rejects files without recognizable extensions, so this
+    /// avoids the silent "no image" failure mode when image URLs (e.g. `picsum.photos/600/400`)
+    /// have no extension in their path.
+    private static func fileExtension(for url: URL, response: URLResponse?) -> String {
+        let pathExt = (url.lastPathComponent as NSString).pathExtension
+        if !pathExt.isEmpty { return "." + pathExt }
+
+        let mimeType = (response as? HTTPURLResponse)?
+            .value(forHTTPHeaderField: "Content-Type")?.lowercased() ?? ""
+        if mimeType.contains("png") { return ".png" }
+        if mimeType.contains("gif") { return ".gif" }
+        return ".jpg"
     }
 
     override func serviceExtensionTimeWillExpire() {

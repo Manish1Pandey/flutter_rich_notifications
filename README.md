@@ -162,6 +162,55 @@ await FlutterRichNotifications.show(
 );
 ```
 
+## Customizing the iOS rich layout
+
+The NCE ships with a polished default — hero image (200pt rounded), title in semibold, body in regular with comfortable line spacing, semantic colors that adapt to light/dark mode.
+
+To tweak it, open the `NotificationViewController.swift` you copied into your NCE target and edit the "Design knobs" block at the top of the class:
+
+```swift
+// Image-related knobs
+var imagePosition: ImagePosition = .top         // .top, .bottom, or .none
+var imageHeight: CGFloat = 200
+var imageCornerRadius: CGFloat = 12
+
+// Typography
+var titleFont: UIFont = .systemFont(ofSize: 17, weight: .semibold)
+var bodyFont: UIFont = .systemFont(ofSize: 14, weight: .regular)
+var bodyLineSpacing: CGFloat = 3
+
+// Colors (defaults adapt to dark mode)
+var titleColor: UIColor = .resolveLabel()
+var bodyColor: UIColor = .resolveSecondaryLabel()
+var cardBackgroundColor: UIColor = .clear
+var accentColor: UIColor? = nil   // set to a brand UIColor to show a left stripe
+
+// Spacing
+var horizontalPadding: CGFloat = 16
+var verticalPadding: CGFloat = 14
+var titleBodySpacing: CGFloat = 6
+var imageToTextSpacing: CGFloat = 12
+```
+
+For deeper layout changes (e.g. custom typography per-notification based on payload data), override the `open` hooks:
+
+```swift
+override func applyTitle(_ text: String) {
+    titleLabel.attributedText = NSAttributedString(
+        string: text,
+        attributes: [.font: UIFont(name: "Inter-Bold", size: 18)!,
+                     .kern: 0.3]
+    )
+}
+
+override func applyBody(_ text: String) {
+    super.applyBody(text)
+    // post-process bodyLabel further...
+}
+```
+
+For a fully bespoke layout, override `installConstraints()` in a subclass — but at that point you're rebuilding the renderer, which is usually overkill.
+
 ## Caveats
 
 | Platform | Caveat |
