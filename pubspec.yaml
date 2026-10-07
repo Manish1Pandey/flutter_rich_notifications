@@ -3,7 +3,7 @@ description: >-
   Push notifications with a full hero image AND full multi-line body, for
   Android (custom RemoteViews) and iOS (Notification Content Extension).
 version: 0.1.2
-homepage: https://github.com/Manish1Pandey/flutter_rich_notifications
+homepage: https://flutterdev.in/packages/flutter_rich_notifications/
 repository: https://github.com/Manish1Pandey/flutter_rich_notifications
 issue_tracker: https://github.com/Manish1Pandey/flutter_rich_notifications/issues
 

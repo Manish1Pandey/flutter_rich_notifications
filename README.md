@@ -220,6 +220,12 @@ For a fully bespoke layout, override `installConstraints()` in a subclass — bu
 | **iOS Simulator** | NCE doesn't fire for remote pushes in the simulator. Test on a real device. |
 | **Background / killed app** | On both platforms, notifications delivered while the app is backgrounded / killed are routed by the OS, not the Flutter foreground handler. On iOS the NCE still fires for the rich layout. On Android, the plugin's `show()` won't run because Dart isn't executing — the system renders the standard notification. To get the rich layout in background/killed on Android too, send the FCM message as **data-only** (omit the `notification` block) and add a `FirebaseMessaging.onBackgroundMessage` handler that calls `FlutterRichNotifications.show`. |
 
+## Links
+
+- **Documentation:** [flutterdev.in/packages/flutter_rich_notifications](https://flutterdev.in/packages/flutter_rich_notifications/)
+- **More Flutter packages:** [flutterdev.in](https://flutterdev.in)
+- **Learn data structures & algorithms in Dart:** [Algoistan](https://algoistan.flutterdev.in)
+
 ## License
 
 MIT. See [LICENSE](LICENSE).
