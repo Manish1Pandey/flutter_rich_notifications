@@ -16,9 +16,11 @@ public class FlutterRichNotificationsPlugin: NSObject, FlutterPlugin {
         case "show":
             // On iOS the rich layout is rendered by the Notification Content
             // Extension at delivery time. The Dart `show` call is a no-op
-            // here: the OS dispatches directly to the NCE when the APNs
-            // payload includes `aps.category` matching the extension's
-            // `UNNotificationExtensionCategory`. See README for setup.
+            // here: the OS dispatches to the NCE when the APNs payload
+            // includes `aps.category` matching the extension's
+            // `UNNotificationExtensionCategory`. The category is optional —
+            // without it the notification still shows in the system's default
+            // layout. See README for setup.
             result(true)
         default:
             result(FlutterMethodNotImplemented)

@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.3
+
+* Docs: clarify that `aps.category: "rich_notification"` is **optional**, not
+  required. Without it the notification still arrives on iOS (title, body, and
+  image via the NSE) using the system's default layout — only the NCE's custom
+  full-body UI is skipped. Updated README ("How it works" + payload table),
+  Dart API docs, and the iOS plugin comment. No behavioral change.
+
 ## 0.1.2
 
 * iOS NCE: redesigned default layout for a polished look out of the box —

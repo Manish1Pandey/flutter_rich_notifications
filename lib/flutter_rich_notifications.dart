@@ -8,8 +8,11 @@ import 'package:flutter/services.dart';
 /// On Android the plugin renders a custom `RemoteViews` layout that bypasses
 /// the stock `BigPictureStyle` body-line limit. On iOS the rich layout is
 /// rendered by a Notification Content Extension you add to your app (see
-/// README — `ios_setup` section). The OS dispatches directly to the NCE
-/// when the APNs payload includes the matching `aps.category`.
+/// README — `ios_setup` section). The OS dispatches to the NCE only when the
+/// APNs payload includes the matching `aps.category`. That category is
+/// optional: without it the notification still arrives (title, body, and
+/// image via the NSE) in the system's default layout — only the NCE's custom
+/// rich UI is skipped.
 class FlutterRichNotifications {
   static const MethodChannel _channel =
       MethodChannel('flutter_rich_notifications/channel');
@@ -34,9 +37,11 @@ class FlutterRichNotifications {
   /// hero image. [payload] becomes extras on the tap `Intent`.
   ///
   /// On iOS this method is a no-op: rendering happens entirely inside the
-  /// Notification Content Extension at delivery time. To trigger the NCE,
-  /// the APNs payload must include `aps.category` matching the extension's
-  /// `UNNotificationExtensionCategory` (default `rich_notification`).
+  /// Notification Content Extension at delivery time. To trigger the NCE's
+  /// custom UI, the APNs payload must include `aps.category` matching the
+  /// extension's `UNNotificationExtensionCategory` (default
+  /// `rich_notification`). The category is optional — omit it and the
+  /// notification still displays via the system's default layout.
   ///
   /// Returns `true` on success. Returns `false` if the platform isn't
   /// supported or the platform call failed.

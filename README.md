@@ -13,13 +13,13 @@ Display Android and iOS push notifications with a **full hero image AND full mul
 | Platform | Mechanism |
 |---|---|
 | **Android** | Custom `RemoteViews` layout with `setCustomBigContentView` + `DecoratedCustomViewStyle`. Plugin downloads the image, builds the layout, and posts the notification. |
-| **iOS** | Notification Content Extension (NCE) you add to your app. The NCE renders a programmatic `UIViewController` with `UIImageView` (hero) + multi-line `UILabel` (full body). The OS routes the notification to the NCE when the APNs payload includes a matching `aps.category`. |
+| **iOS** | Notification Content Extension (NCE) you add to your app. The NCE renders a programmatic `UIViewController` with `UIImageView` (hero) + multi-line `UILabel` (full body). The OS routes the notification to the NCE **only when** the APNs payload includes a matching `aps.category`. The category is **optional** — omit it and the notification still renders (title, body, and image via the NSE) using the system's default layout; you simply don't get the NCE's custom full-body UI. |
 
 ## Installation
 
 ```yaml
 dependencies:
-  flutter_rich_notifications: ^0.1.0
+  flutter_rich_notifications: ^0.1.3
 ```
 
 ```bash
@@ -100,11 +100,36 @@ Both platforms read the same FCM message, but each platform's "render rich" trig
 }
 ```
 
-| Field | Why it's needed |
-|---|---|
-| `notification.image` (or `notification.android.image` / `apns.fcm_options.image`) | Image URL; consumed by Android plugin and iOS NSE |
-| `apns.payload.aps.mutable-content: 1` | Triggers iOS NSE (image download) |
-| `apns.payload.aps.category: "rich_notification"` | Triggers iOS NCE (rich UI) — must match `UNNotificationExtensionCategory` in the NCE's Info.plist |
+| Field | Required? | Why it's needed |
+|---|---|---|
+| `notification.image` (or `notification.android.image` / `apns.fcm_options.image`) | For images | Image URL; consumed by Android plugin and iOS NSE |
+| `apns.payload.aps.mutable-content: 1` | For images (iOS) | Triggers iOS NSE (image download) |
+| `apns.payload.aps.category: "rich_notification"` | **Optional** | Triggers iOS NCE (rich full-body UI) — must match `UNNotificationExtensionCategory` in the NCE's Info.plist. **Omit it and the notification still arrives** with title/body/image in the system's default layout; only the NCE's custom UI is skipped. |
+
+### Minimal payload (no custom UI)
+
+Drop `aps.category` when you don't need the NCE's custom layout. The image still
+attaches via the NSE, so iOS renders the stock expanded notification with the
+hero image:
+
+```json
+{
+  "message": {
+    "token": "<device_fcm_token>",
+    "notification": {
+      "title": "Payment Successful",
+      "body": "Your rent payment of ₹12,500 has been processed.",
+      "image": "https://example.com/receipt.jpg"
+    },
+    "apns": {
+      "headers": { "apns-priority": "10" },
+      "payload": { "aps": { "mutable-content": 1 } }
+    }
+  }
+}
+```
+
+Drop `mutable-content` too for a plain text-only notification with no image.
 
 ## Usage
 
