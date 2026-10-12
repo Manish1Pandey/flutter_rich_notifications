@@ -1,3 +1,7 @@
+## 0.1.4
+
+* Homepage and README now link to the package's documentation page on flutterdev.in. No code changes.
+
 # Changelog
 
 ## 0.1.3
