@@ -1,3 +1,9 @@
+## 0.1.5
+
+* Platform check uses `defaultTargetPlatform` instead of `dart:io` `Platform`, so `show` no longer throws on web and the Android path is testable. Same behaviour on Android and iOS.
+* Added tests for `show` and `RichNotificationConfig`.
+* Example: doc comments; silence the Flutter 3.50 `material.dart` deprecation.
+
 ## 0.1.4
 
 * Homepage and README now link to the package's documentation page on flutterdev.in. No code changes.

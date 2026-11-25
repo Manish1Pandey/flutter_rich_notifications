@@ -1,5 +1,4 @@
-import 'dart:io';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 /// Display Android and iOS push notifications with a full hero image AND
@@ -52,7 +51,7 @@ class FlutterRichNotifications {
     String? screenRoute,
     Map<String, String> payload = const {},
   }) async {
-    if (!Platform.isAndroid) {
+    if (kIsWeb || defaultTargetPlatform != TargetPlatform.android) {
       // iOS rendering is driven by the NCE; no Dart-side work needed.
       return true;
     }

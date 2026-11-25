@@ -1,3 +1,4 @@
+// ignore: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:flutter_rich_notifications/flutter_rich_notifications.dart';
 
@@ -14,7 +15,9 @@ void main() {
   runApp(const ExampleApp());
 }
 
+/// Root of the demo app.
 class ExampleApp extends StatelessWidget {
+  /// Creates the demo app.
   const ExampleApp({super.key});
 
   @override
@@ -27,7 +30,9 @@ class ExampleApp extends StatelessWidget {
   }
 }
 
+/// Screen with buttons that post each kind of rich notification.
 class HomePage extends StatelessWidget {
+  /// Creates the demo screen.
   const HomePage({super.key});
 
   static const _longBody =
